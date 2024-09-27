@@ -1,0 +1,16 @@
+[project]
+name = "sbump"
+version = "0.1.0"
+description = "SimpleBump, bump a static project.version in pyproject.toml, no config, no hassle"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.1.7",
+]
+
+[project.scripts]
+sbump = "sbump:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
