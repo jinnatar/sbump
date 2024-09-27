@@ -25,7 +25,9 @@ def update_pyproject(new_version: semver.Version):
     default=False,
     help="Don't write changes to pyproject.toml",
 )
-def cli(ctx):
+def cli(ctx, dry_run: bool):
+    ctx.ensure_object(dict)
+    ctx.obj['dry_run'] = dry_run
     if not ctx.invoked_subcommand:
         display()
 
@@ -37,27 +39,30 @@ def display():
 
 
 @cli.command()  # pyright: ignore
-def major(dry_run: bool):
+@click.pass_context
+def major(ctx):
     version = get_from_pyproject()
     new_version = version.bump_major()
     click.echo(new_version)
-    if not dry_run:
+    if not ctx.obj['dry_run']:
         update_pyproject(new_version)
 
 
 @cli.command()  # pyright: ignore
-def minor(dry_run: bool):
+@click.pass_context
+def minor(ctx):
     version = get_from_pyproject()
     new_version = version.bump_minor()
     click.echo(new_version)
-    if not dry_run:
+    if not ctx.obj['dry_run']:
         update_pyproject(new_version)
 
 
 @cli.command()  # pyright: ignore
-def patch(dry_run: bool):
+@click.pass_context
+def patch(ctx):
     version = get_from_pyproject()
     new_version = version.bump_patch()
     click.echo(new_version)
-    if not dry_run:
+    if not ctx.obj['dry_run']:
         update_pyproject(new_version)
